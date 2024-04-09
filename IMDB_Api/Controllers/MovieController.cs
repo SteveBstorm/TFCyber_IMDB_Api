@@ -27,6 +27,12 @@ namespace IMDB_Api.Controllers
             return Ok(_movieRepo.GetAll()) ;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            return Ok(_movieRepo.GetById(id));
+        }
+
         [HttpPost]
         public IActionResult Create(MovieCreateForm form)
         {
