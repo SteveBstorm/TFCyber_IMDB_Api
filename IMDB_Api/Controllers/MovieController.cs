@@ -36,6 +36,7 @@ namespace IMDB_Api.Controllers
         /// <returns>Un objet de type Movie</returns>
         /// <remarks>Cette méthode prend un Id de film en paramètre et 
         /// retourne un Ok contenant l'objet</remarks>
+        /// <response code="200">C'est cool ça marche</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
 
@@ -44,11 +45,11 @@ namespace IMDB_Api.Controllers
             return Ok(_movieRepo.GetById(id));
         }
 
-        
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(MovieCreateForm), StatusCodes.Status400BadRequest)]
-        
+
         public IActionResult Create(MovieCreateForm form)
         {
             if (!ModelState.IsValid) return BadRequest();
@@ -77,6 +78,12 @@ namespace IMDB_Api.Controllers
 
             return Ok();
 
+        }
+
+        [HttpGet("byActorId/{id}")]
+        public IActionResult GetByActorId(int id)
+        {
+            return Ok(_movieRepo.GetMovieByPersonId(id));
         }
 
     }

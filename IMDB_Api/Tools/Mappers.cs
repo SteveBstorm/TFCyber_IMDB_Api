@@ -14,5 +14,14 @@ namespace IMDB_Api.Tools
                 RealisatorId = form.RealisatorId
             };
         }
+
+        public static Person ToDal(this PersonCreateForm form)
+        {
+            return new Person { 
+                Firstname = form.Firstname,
+                Lastname = form.Lastname,
+                PictureURL = form.PictureUrl
+            };
+        }
     }
 }
