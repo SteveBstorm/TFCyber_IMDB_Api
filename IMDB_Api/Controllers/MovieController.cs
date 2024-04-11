@@ -1,9 +1,10 @@
-﻿using ASP_Demo_Archi_DAL.Models;
+﻿using Asp_Demo_Archi_BLL.Interfaces;
 using ASP_Demo_Archi_DAL.Repositories;
 using ASP_Demo_Archi_DAL.Services;
 using IMDB_Api.Exemples;
 using IMDB_Api.Models;
 using IMDB_Api.Tools;
+using IMDB_Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +14,11 @@ namespace IMDB_Api.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private readonly IMovieRepo _movieRepo;
+        private readonly IMovieService _movieService;
 
-        public MovieController(IMovieRepo movieRepo)
+        public MovieController(IMovieService movieService)
         {
-            _movieRepo = movieRepo;
+            _movieService = movieService; 
         }
 
         [HttpGet]
@@ -27,7 +28,7 @@ namespace IMDB_Api.Controllers
         {
             //object truc = new { Nom = "steve", Age = 22, AgeMental = 12 };/
 
-            return Ok(_movieRepo.GetAll()) ;
+            return Ok(_movieService.GetAll()) ;
         }
         /// <summary>
         /// Faut pas respirer la compote, ça fait tousser
@@ -42,7 +43,7 @@ namespace IMDB_Api.Controllers
 
         public IActionResult GetById(int id)
         {
-            return Ok(_movieRepo.GetById(id));
+            return Ok(_movieService.GetById(id));
         }
 
 
@@ -53,7 +54,7 @@ namespace IMDB_Api.Controllers
         public IActionResult Create(MovieCreateForm form)
         {
             if (!ModelState.IsValid) return BadRequest();
-            _movieRepo.Create(form.ToDAL());
+            _movieService.Create(form.ToDAL());
             return Ok();
         }
 
@@ -61,7 +62,7 @@ namespace IMDB_Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Delete(int id)
         {
-            _movieRepo.Delete(id);
+            _movieService.Delete(id);
             return Ok();
         }
 
@@ -74,7 +75,7 @@ namespace IMDB_Api.Controllers
             if(!ModelState.IsValid) return BadRequest();
             Movie movie = m.ToDAL();
             movie.Id = id;
-            _movieRepo.Edit(movie);
+            _movieService.Edit(movie);
 
             return Ok();
 
@@ -83,7 +84,7 @@ namespace IMDB_Api.Controllers
         [HttpGet("byActorId/{id}")]
         public IActionResult GetByActorId(int id)
         {
-            return Ok(_movieRepo.GetMovieByPersonId(id));
+            return Ok(_movieService.GetMovieByPersonId(id));
         }
 
     }

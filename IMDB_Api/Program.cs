@@ -1,5 +1,7 @@
+using Asp_Demo_Archi_BLL.Interfaces;
 using ASP_Demo_Archi_DAL.Repositories;
-using ASP_Demo_Archi_DAL.Services;
+using DAL = ASP_Demo_Archi_DAL.Services;
+using BLL = Asp_Demo_Archi_BLL.Services;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
@@ -28,9 +30,11 @@ builder.Services.AddSwaggerGen(
         c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
     });
 
-builder.Services.AddScoped<IMovieRepo, MovieService>();
-builder.Services.AddScoped<IPersonRepo, PersonService>();
-builder.Services.AddScoped<IUserRepo, UserService>();
+builder.Services.AddScoped<IMovieRepo, DAL.MovieService>();
+builder.Services.AddScoped<IPersonRepo, DAL.PersonService>();
+builder.Services.AddScoped<IUserRepo, DAL.UserService>();
+builder.Services.AddScoped<IMovie_PersonRepo, DAL.Movie_PersonService>();
+builder.Services.AddScoped<IMovieService, BLL.MovieService>();
 
 //builder.Configuration.GetConnectionString("default");
 

@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMDB_Api", "IMDB_Api\IMDB_A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP_Demo_Archi_DAL", "ASP_Demo_Archi_DAL\ASP_Demo_Archi_DAL.csproj", "{123980BE-8934-4A59-874E-3164CF6916AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp_Demo_Archi_BLL", "Asp_Demo_Archi_BLL\Asp_Demo_Archi_BLL.csproj", "{EB0E53D1-B8D8-42FC-93BB-C5E5C06C036B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMDB_Domain", "IMDB_Domain\IMDB_Domain.csproj", "{A7814EA3-29CD-498B-9FC2-8EE37E7F7D4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{123980BE-8934-4A59-874E-3164CF6916AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{123980BE-8934-4A59-874E-3164CF6916AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{123980BE-8934-4A59-874E-3164CF6916AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB0E53D1-B8D8-42FC-93BB-C5E5C06C036B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB0E53D1-B8D8-42FC-93BB-C5E5C06C036B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB0E53D1-B8D8-42FC-93BB-C5E5C06C036B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB0E53D1-B8D8-42FC-93BB-C5E5C06C036B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7814EA3-29CD-498B-9FC2-8EE37E7F7D4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7814EA3-29CD-498B-9FC2-8EE37E7F7D4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7814EA3-29CD-498B-9FC2-8EE37E7F7D4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7814EA3-29CD-498B-9FC2-8EE37E7F7D4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,5 @@
-﻿using ASP_Demo_Archi_DAL.Models;
-using ASP_Demo_Archi_DAL.Repositories;
+﻿using ASP_Demo_Archi_DAL.Repositories;
+using IMDB_Domain.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;

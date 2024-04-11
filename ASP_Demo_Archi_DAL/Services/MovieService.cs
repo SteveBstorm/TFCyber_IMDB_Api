@@ -1,4 +1,4 @@
-﻿using ASP_Demo_Archi_DAL.Models;
+﻿using IMDB_Domain.Models;
 using ASP_Demo_Archi_DAL.Repositories;
 using Dapper;
 using Microsoft.Data.SqlClient;

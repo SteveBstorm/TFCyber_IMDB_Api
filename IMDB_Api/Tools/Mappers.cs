@@ -1,4 +1,4 @@
-﻿using ASP_Demo_Archi_DAL.Models;
+﻿using IMDB_Domain.Models;
 using IMDB_Api.Models;
 
 namespace IMDB_Api.Tools

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
+using IMDB_Domain.Models;
 
 namespace ASP_Demo_Archi_DAL.Services
 {
@@ -37,6 +39,16 @@ namespace ASP_Demo_Archi_DAL.Services
 
                 }
             }
+        }
+
+        public IEnumerable<Actor> GetActors(int movieId)
+        {
+            string sql = "SELECT mp.Role, p.Id, p.Firstname, p.Lastname, p.PictureURL " +
+                "FROM Movie_Person mp JOIN Person p ON mp.PersonId = p.Id " +
+                "WHERE MovieId = @mid";
+
+            SqlConnection cnx = new SqlConnection(connectionString);
+            return cnx.Query<Actor>(sql, new {mid = movieId});
         }
     }
 }

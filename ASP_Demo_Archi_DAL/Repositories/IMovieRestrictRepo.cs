@@ -1,4 +1,4 @@
-﻿using ASP_Demo_Archi_DAL.Models;
+﻿using IMDB_Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

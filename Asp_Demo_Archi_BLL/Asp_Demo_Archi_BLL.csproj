@@ -7,12 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.4" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\ASP_Demo_Archi_DAL\ASP_Demo_Archi_DAL.csproj" />
     <ProjectReference Include="..\IMDB_Domain\IMDB_Domain.csproj" />
   </ItemGroup>
 

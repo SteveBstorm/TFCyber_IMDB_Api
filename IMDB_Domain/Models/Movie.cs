@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ASP_Demo_Archi_DAL.Models
+namespace IMDB_Domain.Models
 {
     public class Movie
     {

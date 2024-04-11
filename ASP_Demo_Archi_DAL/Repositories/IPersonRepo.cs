@@ -1,4 +1,4 @@
-﻿using ASP_Demo_Archi_DAL.Models;
+﻿using IMDB_Domain.Models;
 
 namespace ASP_Demo_Archi_DAL.Repositories
 {
