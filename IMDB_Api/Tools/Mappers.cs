@@ -5,7 +5,7 @@ namespace IMDB_Api.Tools
 {
     public static class Mappers
     {
-        public static Movie ToDAL(this MovieCreateForm form)
+        public static Movie ToDomain(this MovieCreateForm form)
         {
             return new Movie
             {
@@ -15,7 +15,7 @@ namespace IMDB_Api.Tools
             };
         }
 
-        public static Person ToDal(this PersonCreateForm form)
+        public static Person ToDomain(this PersonCreateForm form)
         {
             return new Person { 
                 Firstname = form.Firstname,
