@@ -4,6 +4,10 @@ using DAL = ASP_Demo_Archi_DAL.Services;
 using BLL = Asp_Demo_Archi_BLL.Services;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using IMDB_Api.Tools;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,29 +16,65 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(
-    c =>
-    {
-        c.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Title = "IMDB Api",
-            Description = "Api fournissant des infos ciné",
-            Contact = new OpenApiContact
-            {
-                Name = "Steve Lorent",
-                Email = "steve.lorent@bstorm.be"
-            },
-            Version = "v1"
-        });
-        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
-    });
 
+//Configuration Swagger Doc
+#region Swagger
+builder.Services.AddSwaggerGen(
+c =>
+{
+c.SwaggerDoc("v1", new OpenApiInfo
+{
+    Title = "IMDB Api",
+    Description = "Api fournissant des infos ciné",
+    Contact = new OpenApiContact
+    {
+        Name = "Steve Lorent",
+        Email = "steve.lorent@bstorm.be"
+    },
+    Version = "v1"
+});
+var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
+});
+#endregion
+
+//Bloc d'enregistrements des services dans la DI
+#region Injection de dépendances
 builder.Services.AddScoped<IMovieRepo, DAL.MovieService>();
 builder.Services.AddScoped<IPersonRepo, DAL.PersonService>();
 builder.Services.AddScoped<IUserRepo, DAL.UserService>();
 builder.Services.AddScoped<IMovie_PersonRepo, DAL.Movie_PersonService>();
 builder.Services.AddScoped<IMovieService, BLL.MovieService>();
+builder.Services.AddScoped<IPersonService, BLL.PersonService>();
+builder.Services.AddScoped<IUserService, BLL.UserService>();
+
+builder.Services.AddScoped<TokenGenerator>();
+#endregion
+
+//Config de la sécurité via Token JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+        options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                    builder.Configuration.GetSection("TokenInfo").GetSection("secretKey").Value)),
+                ValidateLifetime = true,
+                ValidAudience = "https://monclient.com",
+                ValidIssuer = "https://monapi.com",
+                ValidateAudience = false
+            };
+        }
+    );
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("adminPolicy", policy => policy.RequireRole("admin"));
+    //options.AddPolicy("modoPolicy", policy => policy.RequireRole("admin", "moderator"));
+    //options.AddPolicy("adminPolicy", policy => policy.RequireClaim("UserId", "1");
+    options.AddPolicy("isConnectedPolicy", policy => policy.RequireAuthenticatedUser());
+});
 
 //builder.Configuration.GetConnectionString("default");
 
@@ -49,6 +89,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//Dans cet ordre précis sinon c'est tout nu dans les orties
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

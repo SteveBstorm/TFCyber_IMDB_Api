@@ -1,7 +1,6 @@
-﻿using ASP_Demo_Archi_DAL.Repositories;
+﻿using Asp_Demo_Archi_BLL.Interfaces;
 using IMDB_Api.Models;
 using IMDB_Api.Tools;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMDB_Api.Controllers
@@ -10,10 +9,10 @@ namespace IMDB_Api.Controllers
     [ApiController]
     public class PersonController : ControllerBase
     {
-        private readonly IPersonRepo _personRepo;
-        public PersonController(IPersonRepo personRepo)
+        private readonly IPersonService _personService;
+        public PersonController(IPersonService personService)
         {
-            _personRepo = personRepo;
+            _personService = personService;
         }
         /// <summary>
         /// Fournit la liste des personnes
@@ -22,13 +21,13 @@ namespace IMDB_Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_personRepo.GetAll());
+            return Ok(_personService.GetAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get([FromRoute]int id)
         {
-            return Ok(_personRepo.GetById(id));
+            return Ok(_personService.GetById(id));
         }
 
         [HttpPost]
@@ -36,7 +35,7 @@ namespace IMDB_Api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            _personRepo.Create(form.ToDal());
+            _personService.Create(form.ToDomain());
             return Ok();
         }
     }

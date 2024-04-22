@@ -2,6 +2,7 @@
 using IMDB_Api.Models;
 using IMDB_Api.Tools;
 using IMDB_Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMDB_Api.Controllers
@@ -42,7 +43,7 @@ namespace IMDB_Api.Controllers
             return Ok(_movieService.GetById(id));
         }
 
-
+        [Authorize("adminPolicy")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(MovieCreateForm), StatusCodes.Status400BadRequest)]
@@ -50,7 +51,7 @@ namespace IMDB_Api.Controllers
         public IActionResult Create(MovieCreateForm form)
         {
             if (!ModelState.IsValid) return BadRequest();
-            _movieService.Create(form.ToDAL());
+            _movieService.Create(form.ToDomain());
             return Ok();
         }
 
@@ -69,7 +70,7 @@ namespace IMDB_Api.Controllers
         public IActionResult Update([FromBody]MovieCreateForm m, [FromRoute]int id)
         {
             if(!ModelState.IsValid) return BadRequest();
-            Movie movie = m.ToDAL();
+            Movie movie = m.ToDomain();
             movie.Id = id;
             _movieService.Edit(movie);
 
@@ -77,6 +78,7 @@ namespace IMDB_Api.Controllers
 
         }
 
+        [Authorize("isConnectedPolicy")]
         [HttpGet("byActorId/{id}")]
         public IActionResult GetByActorId(int id)
         {
