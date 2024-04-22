@@ -1,11 +1,7 @@
 ﻿using Asp_Demo_Archi_BLL.Interfaces;
-using ASP_Demo_Archi_DAL.Repositories;
-using ASP_Demo_Archi_DAL.Services;
-using IMDB_Api.Exemples;
 using IMDB_Api.Models;
 using IMDB_Api.Tools;
 using IMDB_Domain.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMDB_Api.Controllers
