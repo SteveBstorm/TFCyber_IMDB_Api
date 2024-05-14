@@ -11,5 +11,6 @@ namespace Asp_Demo_Archi_BLL.Interfaces
     {
         User Login(string email, string password);
         void Register(string email, string password, string nickname);
+        User GetUser(int id);
     }
 }

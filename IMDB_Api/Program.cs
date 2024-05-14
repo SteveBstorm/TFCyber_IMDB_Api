@@ -76,6 +76,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("isConnectedPolicy", policy => policy.RequireAuthenticatedUser());
 });
 
+
+
 //builder.Configuration.GetConnectionString("default");
 
 var app = builder.Build();
@@ -88,6 +90,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(o => o.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 //Dans cet ordre précis sinon c'est tout nu dans les orties
 app.UseAuthentication();

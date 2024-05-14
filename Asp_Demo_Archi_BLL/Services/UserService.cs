@@ -16,6 +16,12 @@ namespace Asp_Demo_Archi_BLL.Services
         {
             _repo = repo;
         }
+
+        public User GetUser(int id)
+        {
+            return _repo.GetUser(id);
+        }
+
         public User Login(string email, string password)
         {
             string verifyPWD = _repo.GetHashPwd(email);

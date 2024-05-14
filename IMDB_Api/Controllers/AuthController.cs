@@ -2,8 +2,12 @@
 using IMDB_Api.Models;
 using IMDB_Api.Tools;
 using IMDB_Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace IMDB_Api.Controllers
 {
@@ -52,5 +56,17 @@ namespace IMDB_Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize("isConnectedPolicy")]
+        [HttpGet]
+        public IActionResult Test()
+        {
+            string tokenFromRequest = HttpContext.Request.Headers["Authorization"];
+            string tokenOk = tokenFromRequest.Substring(7, tokenFromRequest.Length - 7);
+            JwtSecurityToken jwt = new JwtSecurityToken(tokenOk);
+            int id = int.Parse(jwt.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+            return Ok(_userService.GetUser(id));
+        }
+
     }
 }

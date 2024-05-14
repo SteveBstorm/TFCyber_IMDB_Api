@@ -1,4 +1,5 @@
 ﻿using ASP_Demo_Archi_DAL.Repositories;
+using Dapper;
 using IMDB_Domain.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -97,6 +98,11 @@ namespace ASP_Demo_Archi_DAL.Services
                     return pwd;
                 }
             }
+        }
+
+        public User GetUser(int id) { 
+            SqlConnection cnx = new SqlConnection(connectionString);
+            return cnx.QueryFirst<User>("SELECT * FROM UserAccount WHERE Id = @id", new { id });
         }
     }
 }

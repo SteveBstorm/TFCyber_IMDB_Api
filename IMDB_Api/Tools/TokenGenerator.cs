@@ -43,5 +43,14 @@ namespace IMDB_Api.Tools
             return handler.WriteToken(jwt);
 
         }
+
+        public int GetIdFromToken(HttpContext context)
+        {
+            string tokenFromRequest = context.Request.Headers["Authorization"];
+            string tokenOk = tokenFromRequest.Substring(7, tokenFromRequest.Length - 7);
+            JwtSecurityToken jwt = new JwtSecurityToken(tokenOk);
+            int id = int.Parse(jwt.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
+            return id;
+        }
     }
 }
