@@ -8,6 +8,8 @@ using IMDB_Api.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Data;
+using Microsoft.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,9 @@ c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
 
 //Bloc d'enregistrements des services dans la DI
 #region Injection de dépendances
+builder.Services.AddTransient<SqlConnection>(sp 
+    => new SqlConnection(builder.Configuration.GetConnectionString("default")));
+
 builder.Services.AddScoped<IMovieRepo, DAL.MovieService>();
 builder.Services.AddScoped<IPersonRepo, DAL.PersonService>();
 builder.Services.AddScoped<IUserRepo, DAL.UserService>();
@@ -52,21 +57,22 @@ builder.Services.AddScoped<TokenGenerator>();
 #endregion
 
 //Config de la sécurité via Token JWT
+#region Authentification JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
-        options =>
-        {
-            options.TokenValidationParameters = new TokenValidationParameters()
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                    builder.Configuration.GetSection("TokenInfo").GetSection("secretKey").Value)),
-                ValidateLifetime = true,
-                ValidAudience = "https://monclient.com",
-                ValidIssuer = "https://monapi.com",
-                ValidateAudience = false
-            };
-        }
-    );
+options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+            builder.Configuration.GetSection("TokenInfo").GetSection("secretKey").Value)),
+        ValidateLifetime = true,
+        ValidAudience = "https://monclient.com",
+        ValidIssuer = "https://monapi.com",
+        ValidateAudience = false
+    };
+}
+);
 
 builder.Services.AddAuthorization(options =>
 {
@@ -75,7 +81,11 @@ builder.Services.AddAuthorization(options =>
     //options.AddPolicy("adminPolicy", policy => policy.RequireClaim("UserId", "1");
     options.AddPolicy("isConnectedPolicy", policy => policy.RequireAuthenticatedUser());
 });
+#endregion
 
+
+//builder.Services.AddCors(options => options.AddPolicy("maSecurite",
+//    o => o.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowCredentials().AllowAnyHeader()));
 //builder.Configuration.GetConnectionString("default");
 
 var app = builder.Build();
@@ -88,7 +98,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+//app.UseCors("maSecurite");
+app.UseCors(o=> o.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 //Dans cet ordre précis sinon c'est tout nu dans les orties
 app.UseAuthentication();
 app.UseAuthorization();

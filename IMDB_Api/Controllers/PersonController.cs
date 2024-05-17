@@ -1,10 +1,12 @@
 ﻿using Asp_Demo_Archi_BLL.Interfaces;
 using IMDB_Api.Models;
 using IMDB_Api.Tools;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMDB_Api.Controllers
 {
+    [Authorize("isConnectedPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class PersonController : ControllerBase
@@ -18,6 +20,7 @@ namespace IMDB_Api.Controllers
         /// Fournit la liste des personnes
         /// </summary>
         /// <returns>Un IEnumerable de Person</returns>
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAll()
         {
