@@ -7,5 +7,6 @@ namespace ASP_Demo_Archi_DAL.Repositories
         User Login(string email, string password);
         void Register(string email, string password, string nickname);
         string GetHashPwd(string email);
+        User GetUser(int id);
     }
 }

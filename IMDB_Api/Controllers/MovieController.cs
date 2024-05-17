@@ -82,6 +82,7 @@ namespace IMDB_Api.Controllers
         [HttpGet("byActorId/{id}")]
         public IActionResult GetByActorId(int id)
         {
+            
             return Ok(_movieService.GetMovieByPersonId(id));
         }
 

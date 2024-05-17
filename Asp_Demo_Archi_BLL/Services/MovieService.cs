@@ -32,7 +32,7 @@ namespace Asp_Demo_Archi_BLL.Services {
 
         public void Edit(Movie movie)
         {
-            throw new NotImplementedException();
+            _movieRepo.Edit(movie);
         }
 
         public List<Movie> GetAll()

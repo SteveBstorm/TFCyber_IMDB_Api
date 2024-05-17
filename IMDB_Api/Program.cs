@@ -27,7 +27,7 @@ c =>
 c.SwaggerDoc("v1", new OpenApiInfo
 {
     Title = "IMDB Api",
-    Description = "Api fournissant des infos ciné",
+    Description = "Api fournissant des infos cinï¿½",
     Contact = new OpenApiContact
     {
         Name = "Steve Lorent",
@@ -41,7 +41,7 @@ c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
 #endregion
 
 //Bloc d'enregistrements des services dans la DI
-#region Injection de dépendances
+#region Injection de dï¿½pendances
 builder.Services.AddTransient<SqlConnection>(sp 
     => new SqlConnection(builder.Configuration.GetConnectionString("default")));
 
@@ -56,7 +56,7 @@ builder.Services.AddScoped<IUserService, BLL.UserService>();
 builder.Services.AddScoped<TokenGenerator>();
 #endregion
 
-//Config de la sécurité via Token JWT
+//Config de la sï¿½curitï¿½ via Token JWT
 #region Authentification JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
 options =>
@@ -84,6 +84,8 @@ builder.Services.AddAuthorization(options =>
 #endregion
 
 
+
+
 //builder.Services.AddCors(options => options.AddPolicy("maSecurite",
 //    o => o.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowCredentials().AllowAnyHeader()));
 //builder.Configuration.GetConnectionString("default");
@@ -100,7 +102,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 //app.UseCors("maSecurite");
 app.UseCors(o=> o.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-//Dans cet ordre précis sinon c'est tout nu dans les orties
+//Dans cet ordre prï¿½cis sinon c'est tout nu dans les orties
 app.UseAuthentication();
 app.UseAuthorization();
 
