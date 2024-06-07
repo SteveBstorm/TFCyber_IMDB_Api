@@ -37,7 +37,7 @@ namespace Asp_Demo_Archi_BLL.Services {
 
         public List<Movie> GetAll()
         {
-            return _movieRepo.GetAll();
+            return _movieRepo.GetAll().ToList();
         }
 
         public CompleteMovie GetById(int id)

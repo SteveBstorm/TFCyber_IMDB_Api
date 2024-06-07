@@ -25,7 +25,7 @@ namespace Asp_Demo_Archi_BLL.Services
 
         public List<Person> GetAll()
         {
-            return _personRepo.GetAll();
+            return _personRepo.GetAll().ToList();
         }
 
         public Person GetById(int id)

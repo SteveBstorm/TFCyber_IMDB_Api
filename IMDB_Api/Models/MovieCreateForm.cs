@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using IMDB_Domain.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace IMDB_Api.Models
 {
@@ -13,6 +14,8 @@ namespace IMDB_Api.Models
         [Required]
         public int RealisatorId { get; set; }
 
-        
+        public IEnumerable<Actor> Casting{ get; set; }
+
+
     }
 }

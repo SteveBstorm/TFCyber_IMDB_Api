@@ -9,10 +9,11 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
+using Toolbox.RepoTools;
 
 namespace ASP_Demo_Archi_DAL.Services
 {
-    public class UserService : IUserRepo
+    public class UserService : BaseRepository<User>, IUserRepo
     {
         //private string connectionString = @"Data Source=DESKTOP-56GOFPS\DEVPERSO;Initial Catalog=TFCyber_IMDB;Integrated Security=True;Connect Timeout=60;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
         //private string connectionString = @"Data Source=STEVEBSTORM\MSSQLSERVER01;Initial Catalog=TFCyber_IMDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
@@ -25,7 +26,7 @@ namespace ASP_Demo_Archi_DAL.Services
         //}
 
         private readonly SqlConnection connection;
-        public UserService(SqlConnection cnx)
+        public UserService(SqlConnection cnx) : base(cnx)
         {
             connection = cnx;
         }
@@ -90,7 +91,7 @@ namespace ASP_Demo_Archi_DAL.Services
             string sql = "SELECT Password " +
                     "FROM UserAccount WHERE Email = @email";
 
-            return connection.QueryFirst<string>(sql, email);
+            return connection.QueryFirst<string>(sql, new { email });
 
             //using (SqlCommand cmd = connection.CreateCommand())
             //{
@@ -106,5 +107,20 @@ namespace ASP_Demo_Archi_DAL.Services
             //}
         }
 
+        public User GetUser(int id)
+        {
+            return connection.QueryFirst<User>("SELECT * FROM UserAccount WHERE Id = @id", new { id });
+        }
+
+        protected override User Converter(SqlDataReader reader)
+        {
+            return new User
+            {
+                Id = (int)reader["Id"],
+                Email = (string)reader["Email"],
+                IsAdmin = (bool)reader["IsAdmin"],
+                Nickname = (string)reader["Nickname"]
+            };
+        }
     }
 }

@@ -7,20 +7,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Toolbox.RepoTools;
 
 namespace ASP_Demo_Archi_DAL.Services
 {
-    public class PersonService : IPersonRepo
+    public class PersonService : BaseRepository<Person>, IPersonRepo
     {
         //private string connectionString = @"Data Source=STEVEBSTORM\MSSQLSERVER01;Initial Catalog=TFCyber_IMDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
         //private string connectionString = @"Data Source=DESKTOP-56GOFPS\DEVPERSO;Initial Catalog=TFCyber_IMDB;Integrated Security=True;Connect Timeout=60;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
         private string connectionString;
-        public PersonService(IConfiguration config)
+        public PersonService(SqlConnection connection, IConfiguration config) : base(connection)
         {
             connectionString = config.GetConnectionString("default");
         }
-        private Person Converter(SqlDataReader reader)
+        protected override Person Converter(SqlDataReader reader)
         {
             return new Person
             {
@@ -31,27 +32,28 @@ namespace ASP_Demo_Archi_DAL.Services
             };
         }
 
-        public List<Person> GetAll()
-        {
-            List<Person> list = new List<Person>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = "SELECT * FROM Person";
-                    connection.Open();
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            list.Add(Converter(reader));
-                        }
-                    }
-                    connection.Close();
-                }
-            }
-            return list;
-        }
+        //public List<Person> GetAll()
+        //{
+        //    List<Person> list = new List<Person>();
+        //    list = base.GetAll().ToList();
+        //    //using (SqlConnection connection = new SqlConnection(connectionString))
+        //    //{
+        //    //    using (SqlCommand command = connection.CreateCommand())
+        //    //    {
+        //    //        command.CommandText = "SELECT * FROM Person";
+        //    //        connection.Open();
+        //    //        using (SqlDataReader reader = command.ExecuteReader())
+        //    //        {
+        //    //            while (reader.Read())
+        //    //            {
+        //    //                list.Add(Converter(reader));
+        //    //            }
+        //    //        }
+        //    //        connection.Close();
+        //    //    }
+        //    //}
+        //    return list;
+        //}
 
         public void Create(Person p)
         {
@@ -95,6 +97,7 @@ namespace ASP_Demo_Archi_DAL.Services
             }
             return m;
         }
+
     }
 
 }

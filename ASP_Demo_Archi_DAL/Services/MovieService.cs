@@ -8,10 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Toolbox.RepoTools;
 
 namespace ASP_Demo_Archi_DAL.Services
 {
-    public class MovieService : IMovieRepo
+    public class MovieService : BaseRepository<Movie>, IMovieRepo
     {
         //private string connectionString = @"Data Source=DESKTOP-56GOFPS\DEVPERSO;Initial Catalog=TFCyberSecu_MovieDB;Integrated Security=True;Connect Timeout=60;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
         //private string connectionString = @"Data Source=STEVEBSTORM\MSSQLSERVER01;Initial Catalog=TFCyber_IMDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
@@ -20,12 +21,12 @@ namespace ASP_Demo_Archi_DAL.Services
         //public List<Movie> maListe { get; set; }
 
         private string connectionString;
-        public MovieService(IConfiguration config)
+        public MovieService(SqlConnection connection, IConfiguration config) : base(connection)
         {
             connectionString = config.GetConnectionString("default");
         }
 
-        private Movie Converter(SqlDataReader reader)
+        protected override Movie Converter(SqlDataReader reader)
         {
             return new Movie
             {
@@ -36,31 +37,31 @@ namespace ASP_Demo_Archi_DAL.Services
             };
         }
 
-        public List<Movie> GetAll()
-        {
-            string sql = "SELECT * FROM Movie";
-            SqlConnection cnx = new SqlConnection(connectionString);
-            return cnx.Query<Movie>(sql).ToList();
+        //public List<Movie> GetAll()
+        //{
+        //    string sql = "SELECT * FROM Movie";
+        //    SqlConnection cnx = new SqlConnection(connectionString);
+        //    return cnx.Query<Movie>(sql).ToList();
 
-            //List<Movie> list = new List<Movie>();
-            //using (SqlConnection connection = new SqlConnection(connectionString))
-            //{
-            //    using (SqlCommand command = connection.CreateCommand())
-            //    {
-            //        command.CommandText = "SELECT * FROM Movie";
-            //        connection.Open();
-            //        using (SqlDataReader reader = command.ExecuteReader())
-            //        {
-            //            while (reader.Read())
-            //            {
-            //                list.Add(Converter(reader));
-            //            }
-            //        }
-            //        connection.Close();
-            //    }
-            //}
-            //return list;
-        }
+        //    //List<Movie> list = new List<Movie>();
+        //    //using (SqlConnection connection = new SqlConnection(connectionString))
+        //    //{
+        //    //    using (SqlCommand command = connection.CreateCommand())
+        //    //    {
+        //    //        command.CommandText = "SELECT * FROM Movie";
+        //    //        connection.Open();
+        //    //        using (SqlDataReader reader = command.ExecuteReader())
+        //    //        {
+        //    //            while (reader.Read())
+        //    //            {
+        //    //                list.Add(Converter(reader));
+        //    //            }
+        //    //        }
+        //    //        connection.Close();
+        //    //    }
+        //    //}
+        //    //return list;
+        //}
 
         public Movie GetById(int id)
         {

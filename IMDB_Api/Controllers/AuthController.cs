@@ -59,7 +59,7 @@ namespace IMDB_Api.Controllers
 
         [Authorize("isConnectedPolicy")]
         [HttpGet]
-        public IActionResult Test()
+        public IActionResult GetUserInfo()
         {
             string tokenFromRequest = HttpContext.Request.Headers["Authorization"];
             string tokenOk = tokenFromRequest.Substring(7, tokenFromRequest.Length - 7);
