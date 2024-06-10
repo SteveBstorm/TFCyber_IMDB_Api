@@ -26,16 +26,16 @@ namespace ASP_Demo_Archi_DAL.Services
             connectionString = config.GetConnectionString("default");
         }
 
-        protected override Movie Converter(SqlDataReader reader)
-        {
-            return new Movie
-            {
-                Id = (int)reader["Id"],
-                Title = (string)reader["Title"],
-                Description = (string)reader["Description"],
-                RealisatorId = (int)reader["RealisatorId"]
-            };
-        }
+        //protected override Movie Converter(SqlDataReader reader)
+        //{
+        //    return new Movie
+        //    {
+        //        Id = (int)reader["Id"],
+        //        Title = (string)reader["Title"],
+        //        Description = (string)reader["Description"],
+        //        RealisatorId = (int)reader["RealisatorId"]
+        //    };
+        //}
 
         //public List<Movie> GetAll()
         //{
@@ -63,112 +63,112 @@ namespace ASP_Demo_Archi_DAL.Services
         //    //return list;
         //}
 
-        public Movie GetById(int id)
-        {
-            Movie m = new Movie();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = "SELECT * FROM Movie WHERE Id = @id";
-                    command.Parameters.AddWithValue("id", id);
-                    connection.Open();
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            m = Converter(reader);
-                        }
-                    }
-                    connection.Close();
-                }
-            }
-            return m;
-        }
+        //public Movie GetById(int id)
+        //{
+        //    Movie m = new Movie();
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        using (SqlCommand command = connection.CreateCommand())
+        //        {
+        //            command.CommandText = "SELECT * FROM Movie WHERE Id = @id";
+        //            command.Parameters.AddWithValue("id", id);
+        //            connection.Open();
+        //            using (SqlDataReader reader = command.ExecuteReader())
+        //            {
+        //                if (reader.Read())
+        //                {
+        //                    m = Converter(reader);
+        //                }
+        //            }
+        //            connection.Close();
+        //        }
+        //    }
+        //    return m;
+        //}
 
-        public int Create(Movie movie)
-        {
-            CheckMovieExists();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.Connection = connection;
-                    cmd.CommandText = "INSERT INTO Movie (Title, Description, RealisatorId) " +
-                        "OUTPUT inserted.Id " +
-                        "VALUES (@title, @desc, @real)";
+        //public int Create(Movie movie)
+        //{
+        //    CheckMovieExists();
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        using (SqlCommand cmd = new SqlCommand())
+        //        {
+        //            cmd.Connection = connection;
+        //            cmd.CommandText = "INSERT INTO Movie (Title, Description, RealisatorId) " +
+        //                "OUTPUT inserted.Id " +
+        //                "VALUES (@title, @desc, @real)";
 
-                    cmd.Parameters.AddWithValue("title", movie.Title);
-                    cmd.Parameters.AddWithValue("desc", movie.Description);
-                    cmd.Parameters.AddWithValue("real", movie.RealisatorId);
+        //            cmd.Parameters.AddWithValue("title", movie.Title);
+        //            cmd.Parameters.AddWithValue("desc", movie.Description);
+        //            cmd.Parameters.AddWithValue("real", movie.RealisatorId);
 
-                    try
-                    {
-                        connection.Open();
-                        int createdId = (int)cmd.ExecuteScalar();
-                        connection.Close();
-                        return createdId;
-                    }
-                    catch (SqlException ex)
-                    {
-                        //Gérer l'exception
-                        throw ex;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
-                }
-            }
+        //            try
+        //            {
+        //                connection.Open();
+        //                int createdId = (int)cmd.ExecuteScalar();
+        //                connection.Close();
+        //                return createdId;
+        //            }
+        //            catch (SqlException ex)
+        //            {
+        //                //Gérer l'exception
+        //                throw ex;
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                throw ex;
+        //            }
+        //        }
+        //    }
 
-            //movie.Id = (maListe.Count() > 0) ? maListe.Max(s => s.Id) + 1 : 1;
-            //maListe.Add(movie);
-        }
+        //    //movie.Id = (maListe.Count() > 0) ? maListe.Max(s => s.Id) + 1 : 1;
+        //    //maListe.Add(movie);
+        //}
 
-        public void Edit(Movie movie)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.Connection = connection;
-                    cmd.CommandText = "UPDATE Movie SET Title = @title, Description = @desc, RealisatorId = @real " +
-                        "WHERE Id = @id";
+        //public void Edit(Movie movie)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        using (SqlCommand cmd = new SqlCommand())
+        //        {
+        //            cmd.Connection = connection;
+        //            cmd.CommandText = "UPDATE Movie SET Title = @title, Description = @desc, RealisatorId = @real " +
+        //                "WHERE Id = @id";
 
-                    cmd.Parameters.AddWithValue("id", movie.Id);
-                    cmd.Parameters.AddWithValue("title", movie.Title);
-                    cmd.Parameters.AddWithValue("desc", movie.Description);
-                    cmd.Parameters.AddWithValue("real", movie.RealisatorId);
+        //            cmd.Parameters.AddWithValue("id", movie.Id);
+        //            cmd.Parameters.AddWithValue("title", movie.Title);
+        //            cmd.Parameters.AddWithValue("desc", movie.Description);
+        //            cmd.Parameters.AddWithValue("real", movie.RealisatorId);
 
-                    connection.Open();
-                    cmd.ExecuteNonQuery();
-                    connection.Close();
-                }
-            }
-            //int index = maListe.FindIndex(f => f.Id == movie.Id);
-            //maListe[index] = movie;
-        }
+        //            connection.Open();
+        //            cmd.ExecuteNonQuery();
+        //            connection.Close();
+        //        }
+        //    }
+        //    //int index = maListe.FindIndex(f => f.Id == movie.Id);
+        //    //maListe[index] = movie;
+        //}
 
-        public void Delete(int id)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand())
-                {
-                    cmd.Connection = connection;
-                    cmd.CommandText = "DELETE FROM Movie WHERE Id = @id";
+        //public void Delete(int id)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        using (SqlCommand cmd = new SqlCommand())
+        //        {
+        //            cmd.Connection = connection;
+        //            cmd.CommandText = "DELETE FROM Movie WHERE Id = @id";
 
-                    cmd.Parameters.AddWithValue("id", id);
+        //            cmd.Parameters.AddWithValue("id", id);
 
 
-                    connection.Open();
-                    cmd.ExecuteNonQuery();
-                    connection.Close();
-                }
-            }
-            //Movie aSupprimer = maListe.SingleOrDefault(f => f.Id == id);
-            //maListe.Remove(aSupprimer);
-        }
+        //            connection.Open();
+        //            cmd.ExecuteNonQuery();
+        //            connection.Close();
+        //        }
+        //    }
+        //    //Movie aSupprimer = maListe.SingleOrDefault(f => f.Id == id);
+        //    //maListe.Remove(aSupprimer);
+        //}
 
         public List<Movie> GetMovieByPersonId(int PersonId)
         {

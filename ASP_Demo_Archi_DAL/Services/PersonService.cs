@@ -21,16 +21,16 @@ namespace ASP_Demo_Archi_DAL.Services
         {
             connectionString = config.GetConnectionString("default");
         }
-        protected override Person Converter(SqlDataReader reader)
-        {
-            return new Person
-            {
-                Id = (int)reader["Id"],
-                Firstname = (string)reader["Firstname"],
-                Lastname = (string)reader["Lastname"],
-                PictureURL = (string)reader["PictureURL"]
-            };
-        }
+        //protected override Person Converter(SqlDataReader reader)
+        //{
+        //    return new Person
+        //    {
+        //        Id = (int)reader["Id"],
+        //        Firstname = (string)reader["Firstname"],
+        //        Lastname = (string)reader["Lastname"],
+        //        PictureURL = (string)reader["PictureURL"]
+        //    };
+        //}
 
         //public List<Person> GetAll()
         //{
@@ -75,28 +75,28 @@ namespace ASP_Demo_Archi_DAL.Services
             }
         }
 
-        public Person GetById(int id)
-        {
-            Person m = new Person();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = "SELECT * FROM Person WHERE Id = @id";
-                    command.Parameters.AddWithValue("id", id);
-                    connection.Open();
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            m = Converter(reader);
-                        }
-                    }
-                    connection.Close();
-                }
-            }
-            return m;
-        }
+        //public Person GetById(int id)
+        //{
+        //    Person m = new Person();
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        using (SqlCommand command = connection.CreateCommand())
+        //        {
+        //            command.CommandText = "SELECT * FROM Person WHERE Id = @id";
+        //            command.Parameters.AddWithValue("id", id);
+        //            connection.Open();
+        //            using (SqlDataReader reader = command.ExecuteReader())
+        //            {
+        //                if (reader.Read())
+        //                {
+        //                    m = Converter(reader);
+        //                }
+        //            }
+        //            connection.Close();
+        //        }
+        //    }
+        //    return m;
+        //}
 
     }
 
