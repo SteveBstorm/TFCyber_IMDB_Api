@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dapper;
 
 namespace Toolbox.RepoTools
 {
@@ -42,5 +41,15 @@ namespace Toolbox.RepoTools
                 }
             }
         }
+
+        /*
+            Ajouter une méthode générique : GetById(int id)
+            Ajouter une méthode générique : Delete(int id)
+
+            Rendre le tout fonctionnel 
+
+            Bonus : Essayer de mettre en place un mapper/converter générique
+            
+         */
     }
 }
