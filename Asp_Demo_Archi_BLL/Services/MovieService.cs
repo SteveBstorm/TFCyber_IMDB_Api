@@ -20,9 +20,16 @@ namespace Asp_Demo_Archi_BLL.Services {
             _personRepo = personRepo;
             _mpRepo = mpRepo;
         }
-        public int Create(Movie movie)
+        public int Create(CompleteMovie movie)
         {
-            return _movieRepo.Create(movie);
+
+            int newMovieId = _movieRepo.Create(movie);
+            foreach(Actor a in movie.Casting)
+            {
+                _mpRepo.Create(newMovieId, a.Id, a.Role);
+            }
+            return newMovieId;
+
         }
 
         public void Delete(int id)

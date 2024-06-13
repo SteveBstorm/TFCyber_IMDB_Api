@@ -10,7 +10,7 @@ namespace Asp_Demo_Archi_BLL.Interfaces
 {
     public interface IMovieService
     {
-        int Create(Movie movie);
+        int Create(CompleteMovie movie);
         void Delete(int id);
         void Edit(Movie movie);
         List<Movie> GetAll();
