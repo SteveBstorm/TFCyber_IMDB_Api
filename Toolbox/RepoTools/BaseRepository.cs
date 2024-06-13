@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dapper;
-using System.Reflection;
 
 namespace Toolbox.RepoTools
 {
@@ -55,6 +53,15 @@ namespace Toolbox.RepoTools
             }
         }
 
+        /*
+            Ajouter une méthode générique : GetById(int id)
+            Ajouter une méthode générique : Delete(int id)
+
+            Rendre le tout fonctionnel 
+
+            Bonus : Essayer de mettre en place un mapper/converter générique
+            
+         */
         public virtual TEntity GetById(int id, string tableName = "")
         {
             if (string.IsNullOrEmpty(tableName))
