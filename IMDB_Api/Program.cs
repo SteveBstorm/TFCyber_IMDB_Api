@@ -11,6 +11,7 @@ using System.Text;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.FileProviders;
+using IMDB_Api.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,8 @@ builder.Services.AddScoped<IUserService, BLL.UserService>();
 builder.Services.AddScoped<TokenGenerator>();
 #endregion
 
+builder.Services.AddSignalR();
+
 //Config de la s�curit� via Token JWT
 #region Authentification JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
@@ -87,33 +90,37 @@ builder.Services.AddAuthorization(options =>
 
 
 
-//builder.Services.AddCors(options => options.AddPolicy("maSecurite",
-//    o => o.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowCredentials().AllowAnyHeader()));
-//builder.Configuration.GetConnectionString("default");
+builder.Services.AddCors(options => options.AddDefaultPolicy(o => 
+                    o.WithOrigins("http://localhost:4200", "http://localhost", "http://tfcybersecu.somee.com")
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .AllowAnyHeader()));
+builder.Configuration.GetConnectionString("default");
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+}
     app.UseSwagger();
     app.UseSwaggerUI();
-}
 
 app.UseHttpsRedirection();
-//app.UseCors("maSecurite");
-app.UseCors(o=> o.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+app.UseCors();
+//app.UseCors(o=> o.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 //Dans cet ordre pr�cis sinon c'est tout nu dans les orties
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(app.Environment.ContentRootPath, "upload")),
-    RequestPath = "/upload"
-});
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//        Path.Combine(app.Environment.ContentRootPath, "upload")),
+//    RequestPath = "/upload"
+//});
 
+app.MapHub<ChatHub>("chathub");
 app.Run();
